@@ -2,6 +2,7 @@ import gc
 import uos
 import esp
 import network
+import urequests as requests
 import micropython
 
 from time import sleep
@@ -9,9 +10,6 @@ from machine import (
     UART,
     Pin
 )
-
-# from umqttsimple import MQTTClient
-
 
 from secret import (
     ssid,
@@ -22,7 +20,6 @@ from secret import (
 gc.collect()
 
 # uos.dupterm(None, 1)
-
 print("Attempting to connect to wifi...")
 
 station = network.WLAN(network.STA_IF)
@@ -38,12 +35,22 @@ while station.isconnected() is False:
 print("Connection successful!")
 print(station.ifconfig())
 
-print("Setting up serial...")
+try:
+    response = requests.get("http://api.kanye.rest/")
+    if response.status_code == 200:
+        quote = response.json().get("quote", "")
+        print(quote)
+except Exception as e:
+    print(e)
+    
 
-rx_pin = Pin(1)
-tx_pin = Pin(0)
 
-myserial = UART(0, 9600)
-myserial.init(9600)
+# print("Setting up serial...")
 
-print("Serial setup complete!")
+# rx_pin = Pin(1)
+# tx_pin = Pin(0)
+
+# myserial = UART(0, 9600)
+# myserial.init(9600)
+
+# print("Serial setup complete!")
