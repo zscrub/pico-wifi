@@ -16,7 +16,8 @@ while True:
     data = bytes()
     while uart.any() > 0:
         try:
-            data += uart.read(1)
+            if "\r" not in (bytechar := uart.read(1)).decode("utf-8"):
+                data += bytechar
         except Exception as e:
             print(str(e))
             pass
@@ -24,9 +25,18 @@ while True:
     if len(data):
         try:
             output = data.decode("utf-8")
-            print(f"{output}", end="")
+            # output = str(output).strip()
+            # output = "".join(output.splitlines())
+
+            # print(len(output))
+            # print(lcd.num_columns)
+
+            if len(output) > lcd.num_columns:
+                ouput = output[:lcd.num_columns]
+            # print(f"{output}", end="")
             lcd.clear()
             lcd.move_to(0, 0)
+            print(output)
             lcd.putstr(output)
         except UnicodeError as e:
             pass
