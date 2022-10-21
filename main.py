@@ -2,8 +2,8 @@ import gc
 import uos
 import esp
 import network
-import urequests as requests
 import micropython
+import urequests as requests
 
 from time import sleep
 from machine import (
