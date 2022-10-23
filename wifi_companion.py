@@ -21,19 +21,14 @@ while True:
         except Exception as e:
             print(str(e))
             pass
+    i = 0
 
     if len(data):
         try:
             output = data.decode("utf-8")
-            # output = str(output).strip()
-            # output = "".join(output.splitlines())
-
-            # print(len(output))
-            # print(lcd.num_columns)
-
-            if len(output) > lcd.num_columns:
-                ouput = output[:lcd.num_columns]
-            # print(f"{output}", end="")
+            if len(output) > 32:
+                print(f"Full output: {output}")
+                output = output[0:32]
             lcd.clear()
             lcd.move_to(0, 0)
             print(output)
